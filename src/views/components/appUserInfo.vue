@@ -3,7 +3,7 @@
     <div class="app-userinfo_face">
       <img src="../../../public/headIcon.jpeg">
     </div>
-    <p class="app-userinfo_name">Hello, My friend.</p>
+    <p class="app-userinfo_name">Hello! My friend.</p>
     <p class="app-userinfo_tips">
       Looks like feed good.<br />You have some tasks to do
       today.</p>
