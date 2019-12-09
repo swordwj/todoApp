@@ -4,9 +4,7 @@ export function getOneTypeTasks (type, arr) {
     result[item].date = new Date(result[item].date)
   }
   let items = result.filter(item => item.type === type)
-  for (let item in items) {
-    arr.unshift(items[item])
-  }
+  arr = items
   return arr
 }
 export function addTask (state) {
@@ -42,6 +40,24 @@ export function updateTask (task) {
   for (let item in list) {
     if (list[item].id === task.id) {
       list[item].done = !task.done
+    }
+  }
+  localStorage.setItem('tasks', JSON.stringify(list))
+}
+export function backTask (task) {
+  let list = JSON.parse(localStorage.getItem('tasks') || '[]')
+  for (let item in list) {
+    if (list[item].id === task.id) {
+      list[item].deleted = false
+    }
+  }
+  localStorage.setItem('tasks', JSON.stringify(list))
+}
+export function trueDeleteTask (task) {
+  let list = JSON.parse(localStorage.getItem('tasks') || '[]')
+  for (let item in list) {
+    if (list[item].id === task.id) {
+      list.splice(item, 1);
     }
   }
   localStorage.setItem('tasks', JSON.stringify(list))

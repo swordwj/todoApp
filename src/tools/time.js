@@ -15,3 +15,11 @@ export const tomorrow = new Date(
   0,
   0
 )
+export const yestoday = new Date(
+  now.getFullYear(),
+  now.getMonth(),
+  now.getDate() - 1,
+  0,
+  0,
+  0
+)

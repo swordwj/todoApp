@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="todo_body">
-      <p class="todo_tips">{{ todayTotalTasks.length }} Tasks to do</p>
+      <p class="todo_tips">{{ totalTodoTasks.length }} Tasks to do</p>
       <p class="todo_title">{{ this.todo.name }}</p>
       <div class="todo_progress">
         <span class="todo_progress_line">
@@ -26,13 +26,31 @@
           </li>
         </ul>
       </div>
+      <div class="todo_tasks">
+        <p class="todo_subTitle">Outdated</p>
+        <ul>
+          <li v-for="(task, index) in outdatedTasks"
+          :key="index">
+            <task :task="task"></task>
+          </li>
+        </ul>
+      </div>
+      <div class="todo_tasks">
+        <p class="todo_subTitle">Deleted</p>
+        <ul>
+          <li v-for="(task, index) in deletedTasks"
+          :key="index">
+            <task :task="task" :showDelete="true"></task>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import task from './task.vue'
-import { today, tomorrow } from '../../tools/time'
+import { today, tomorrow, yestoday } from '../../tools/time'
 
 export default {
   props: {
@@ -65,7 +83,7 @@ export default {
       const colorRight = `to(${this.todo.colors[1]})`
       return `-webkit-gradient(linear, left bottom, right bottom, ${colorLeft}, ${colorRight})`
     },
-    todayTotalTasks () {
+    totalTodoTasks () {
       return this.todo.tasks.filter(task => {
         return !task.done && !task.deleted
       })
@@ -73,6 +91,16 @@ export default {
     todayTasks () {
       return this.todo.tasks.filter(task => {
         return task.date >= today && task.date < tomorrow && !task.deleted
+      })
+    },
+    outdatedTasks () {
+      return this.todo.tasks.filter(task => {
+        return task.date < today && !task.deleted
+      })
+    },
+    deletedTasks () {
+      return this.todo.tasks.filter(task => {
+        return task.deleted
       })
     }
   },
@@ -174,6 +202,7 @@ export default {
     margin-top: 32px;
     margin-bottom: 8px;
     color: #999;
+    font-size: 14px;
 
     > ul,
     > ul > li {

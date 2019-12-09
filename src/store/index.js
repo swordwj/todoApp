@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { getOneTypeTasks, addTask, deleteTask, updateTask } from '../tools/tasks'
+import { getOneTypeTasks, addTask, deleteTask, updateTask, backTask, trueDeleteTask } from '../tools/tasks'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -12,20 +12,20 @@ export default new Vuex.Store({
         icon: 'user',
         name: 'Personal',
         tasks: [
-          {
-            id: 100000000000000000001,
-            title: 'Dating',
-            date: new Date(),
-            done: true,
-            deleted: false
-          },
-          {
-            id: 100000000000000000002,
-            title: 'Meeting',
-            date: new Date(),
-            done: false,
-            deleted: false
-          }
+          // {
+          //   id: 100000000000000000001,
+          //   title: 'Dating',
+          //   date: new Date(),
+          //   done: true,
+          //   deleted: false
+          // },
+          // {
+          //   id: 100000000000000000002,
+          //   title: 'Meeting',
+          //   date: new Date(),
+          //   done: false,
+          //   deleted: false
+          // }
         ],
         colors: ['#ff6262', '#ffa947']
       },
@@ -33,13 +33,13 @@ export default new Vuex.Store({
         icon: 'suitcase',
         name: 'Work',
         tasks: [
-          {
-            id: 100000000000000000003,
-            title: 'Codding',
-            date: new Date(),
-            done: false,
-            deleted: false
-          }
+          // {
+          //   id: 100000000000000000003,
+          //   title: 'Codding',
+          //   date: new Date(),
+          //   done: false,
+          //   deleted: false
+          // }
         ],
         colors: ['#5b9df9', '#47bfff']
       },
@@ -47,13 +47,13 @@ export default new Vuex.Store({
         icon: 'home',
         name: 'Home',
         tasks: [
-          {
-            id: 100000000000000000004,
-            title: 'House Keeping',
-            date: new Date(),
-            done: true,
-            deleted: false
-          }
+          // {
+          //   id: 100000000000000000004,
+          //   title: 'House Keeping',
+          //   date: new Date(),
+          //   done: true,
+          //   deleted: false
+          // }
         ],
         colors: ['#2c7d59', '#3ba776']
       }
@@ -103,6 +103,16 @@ export default new Vuex.Store({
     },
     updateTask (state, data) {
       updateTask(data)
+    },
+    backTask (_, { task }) {
+      task.deleted = false
+      backTask(task)
+    },
+    trueDeleteTask (state, { task }) {
+      trueDeleteTask(task)
+      for (let item in state.todos) {
+        state.todos[item].tasks = getOneTypeTasks(state.todos[item].name, state.todos[item].tasks)
+      }
     }
   },
   actions: {
@@ -129,6 +139,12 @@ export default new Vuex.Store({
     },
     updateTaskAct ({ commit }, data) {
       commit('updateTask', data)
+    },
+    backTaskAct ({ commit }, { task }) {
+      commit('backTask', { task })
+    },
+    trueDeleteTaskAct ({ commit }, { task }) {
+      commit('trueDeleteTask', { task })
     }
   },
   modules: {

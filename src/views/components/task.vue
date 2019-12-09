@@ -1,15 +1,32 @@
 <template>
   <transition name="show-task">
-    <div class="task" v-if="!task.deleted">
+    <div class="task" v-if="!task.deleted || showDelete">
       <input :id="id" type="checkbox" v-model="task.done" @click="updateTaskAct(task)"/>
       <label :for="id">{{ task.title }}</label>
       <transition name="task-trash">
-        <span
+        <div>
+          <span
+          v-if="showDelete"
           class="task_delete"
           v-show="task.done"
-          @click="deleteTaskAct({ task })">
-          <i class="fa fa-trash"></i>
-        </span>
+          @click="backTaskAct({ task })">
+          <i class="fa fa-mail-reply"></i>
+          </span>
+          <span
+            v-if="showDelete"
+            class="task_delete"
+            v-show="task.done"
+            @click="trueDeleteTaskAct({ task })">
+            <i class="fa fa-trash"></i>
+          </span>
+          <span
+            v-else
+            class="task_delete"
+            v-show="task.done"
+            @click="deleteTaskAct({ task })">
+            <i class="fa fa-trash"></i>
+          </span>
+        </div>
       </transition>
     </div>
   </transition>
@@ -29,10 +46,14 @@ export default {
     task: {
       type: Object,
       required: true
+    },
+    showDelete: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
-    ...mapActions(['deleteTaskAct', 'updateTaskAct'])
+    ...mapActions(['deleteTaskAct', 'updateTaskAct', 'backTaskAct', 'trueDeleteTaskAct'])
   }
 }
 </script>
